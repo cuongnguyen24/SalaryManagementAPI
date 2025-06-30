@@ -1,0 +1,16 @@
+# Thư mục build
+bin/
+obj/
+
+# File cấu hình nhạy cảm
+appsettings.json
+*.config
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+
+# Log và file tạm
+*.log
+*.db
