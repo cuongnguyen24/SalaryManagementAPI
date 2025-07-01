@@ -6,6 +6,7 @@
         {
             CreateMap<NhanVien, NhanVienDTO>().ReverseMap();
             CreateMap<PhongBan, PhongBanDTO>().ReverseMap();
+            CreateMap<ChucVu, ChucVuDTO>().ReverseMap();
         }
     }
 }

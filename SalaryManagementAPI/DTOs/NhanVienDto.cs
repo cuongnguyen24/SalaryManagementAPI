@@ -10,7 +10,7 @@
         public string? DienThoai { get; set; }
         public string? Email { get; set; }
 
-        public string? TenPhongBan { get; set; }
-        public string? TenChucVu { get; set; }
+        public string? MaPhong { get; set; }
+        public string? MaChucVu { get; set; }
     }
 }
