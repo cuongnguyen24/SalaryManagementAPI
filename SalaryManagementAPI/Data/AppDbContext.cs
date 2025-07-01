@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SalaryManagementAPI.Models;
-
-namespace SalaryManagementAPI.Data
+﻿namespace SalaryManagementAPI.Data
 {
     public class AppDbContext : DbContext
     {

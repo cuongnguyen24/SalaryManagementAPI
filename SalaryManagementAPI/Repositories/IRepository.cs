@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace SalaryManagementAPI.Repositories
+﻿namespace SalaryManagementAPI.Repositories
 {
     public interface IRepository<T> where T : class
     {

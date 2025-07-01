@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SalaryManagementAPI.Models
+﻿namespace SalaryManagementAPI.Models
 {
     public class VaiTro
     {

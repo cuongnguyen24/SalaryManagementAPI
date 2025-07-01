@@ -1,0 +1,14 @@
+﻿global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.IdentityModel.Tokens;
+global using SalaryManagementAPI.Data;
+global using SalaryManagementAPI.Repositories;
+global using SalaryManagementAPI.Services;
+global using SalaryManagementAPI.Services.Interfaces;
+global using System.Text;
+global using AutoMapper;
+global using SalaryManagementAPI.DTOs;
+global using SalaryManagementAPI.Models;
+global using System.Linq.Expressions;
+global using System.ComponentModel.DataAnnotations;
+global using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SalaryManagementAPI.Data;
-using System.Linq.Expressions;
-
-namespace SalaryManagementAPI.Repositories
+﻿namespace SalaryManagementAPI.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
