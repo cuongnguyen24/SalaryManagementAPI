@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.OpenApi.Models;
-
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -52,7 +48,9 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1"
     });
 
-    // Thêm định nghĩa bảo mật Bearer
+    options.EnableAnnotations();
+
+    // Định nghĩa bảo mật Bearer
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -80,33 +78,20 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<INhanVienService, NhanVienService>();
 builder.Services.AddScoped<IPhongBanService, PhongBanService>();
 builder.Services.AddScoped<IChucVuService, ChucVuService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); 
-app.UseAuthorization();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.MapControllers();
+app.UseAuthentication();
 
 app.UseStatusCodePages(context =>
 {
@@ -137,6 +122,14 @@ app.UseStatusCodePages(context =>
     return Task.CompletedTask;
 });
 
+app.UseAuthorization();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapControllers();
 app.Run();
 

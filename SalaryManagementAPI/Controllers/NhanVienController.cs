@@ -1,5 +1,8 @@
-﻿namespace SalaryManagementAPI.Controllers
+﻿using Swashbuckle.AspNetCore.Annotations;
+
+namespace SalaryManagementAPI.Controllers
 {
+    [Authorize(Roles = "1,2")]
     [Route("api/[controller]")]
     [ApiController]
     public class NhanVienController : ControllerBase
@@ -13,6 +16,7 @@
 
         // GET: api/NhanVien
         [HttpGet]
+        [SwaggerOperation(Summary = "Lấy danh sách nhân viên")]
         public async Task<ActionResult<IEnumerable<NhanVienDTO>>> GetAll()
         {
             try
@@ -37,6 +41,7 @@
 
         // GET: api/NhanVien/5
         [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Tìm nhân viên theo id")]
         public async Task<ActionResult<NhanVienDTO>> GetById(int id)
         {
             try
@@ -67,8 +72,44 @@
             }
         }
 
+        // GET: api/NhanVien/phongban/3
+        [HttpGet("phongban/{maPhongBan}")]
+        [SwaggerOperation(Summary = "Lấy danh sách nhân viên theo phòng ban")]
+        public async Task<IActionResult> GetByPhongBan(int maPhongBan)
+        {
+            try
+            {
+                var ds = await _nhanVienService.GetByPhongBanAsync(maPhongBan);
+
+                if (ds == null || !ds.Any())
+                {
+                    return NotFound(new
+                    {
+                        ThanhCong = false,
+                        ThongBao = $"Không có nhân viên nào thuộc phòng ban có mã {maPhongBan}."
+                    });
+                }
+
+                return Ok(new
+                {
+                    ThanhCong = true,
+                    ThongBao = $"Lấy danh sách nhân viên phòng ban {maPhongBan} thành công.",
+                    DuLieu = ds
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    ThanhCong = false,
+                    ThongBao = $"Lỗi khi lấy nhân viên theo phòng ban: {ex.Message}",
+                });
+            }
+        }
+
         // POST: api/NhanVien
         [HttpPost]
+        [SwaggerOperation(Summary = "Thêm nhân viên")]
         public async Task<ActionResult<NhanVienDTO>> Create([FromBody] NhanVienDTO nvDto)
         {
             try
@@ -93,6 +134,7 @@
 
         // PUT: api/NhanVien/5
         [HttpPut("{id}")]
+        [SwaggerOperation(Summary = "Cập nhật nhân viên")]
         public async Task<IActionResult> Update(int id, [FromBody] NhanVienDTO nvDto)
         {
             try
@@ -125,6 +167,7 @@
 
         // DELETE: api/NhanVien/5
         [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Xóa nhân viên")]
         public async Task<IActionResult> Delete(int id)
         {
             try

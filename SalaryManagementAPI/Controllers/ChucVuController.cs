@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace SalaryManagementAPI.Controllers
 {
+    [Authorize(Roles = "1")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "3")]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public class ChucVuController : ControllerBase
     {
         private readonly IChucVuService _chucVuService;
@@ -18,6 +20,7 @@ namespace SalaryManagementAPI.Controllers
 
         // GET: api/ChucVu
         [HttpGet]
+        [SwaggerOperation(Summary = "Lấy chức vụ")]
         public async Task<ActionResult> GetAll()
         {
             try
@@ -42,6 +45,7 @@ namespace SalaryManagementAPI.Controllers
 
         // GET: api/ChucVu/5
         [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Lấy chức vụ theo id")]
         public async Task<ActionResult> GetById(int id)
         {
             try
@@ -74,6 +78,7 @@ namespace SalaryManagementAPI.Controllers
 
         // POST: api/ChucVu
         [HttpPost]
+        [SwaggerOperation(Summary = "Thêm chức vụ")]
         public async Task<ActionResult> Create([FromBody] ChucVuDTO dto)
         {
             try
@@ -98,6 +103,7 @@ namespace SalaryManagementAPI.Controllers
 
         // PUT: api/ChucVu/5
         [HttpPut("{id}")]
+        [SwaggerOperation(Summary = "Cập nhật chức vụ")]
         public async Task<IActionResult> Update(int id, [FromBody] ChucVuDTO dto)
         {
             try
@@ -130,6 +136,7 @@ namespace SalaryManagementAPI.Controllers
 
         // DELETE: api/ChucVu/5
         [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Xóa chức vụ")]
         public async Task<IActionResult> Delete(int id)
         {
             try

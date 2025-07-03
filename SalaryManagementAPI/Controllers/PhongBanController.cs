@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace SalaryManagementAPI.Controllers
 {
+    [Authorize(Roles = "1")]
     [Route("api/[controller]")]
     [ApiController]
     public class PhongBanController : ControllerBase
@@ -16,6 +18,7 @@ namespace SalaryManagementAPI.Controllers
 
         // GET: api/PhongBan
         [HttpGet]
+        [SwaggerOperation(Summary = "Lấy danh sách phòng ban")]
         public async Task<ActionResult<IEnumerable<PhongBanDTO>>> GetAll()
         {
             try
@@ -40,6 +43,7 @@ namespace SalaryManagementAPI.Controllers
 
         // GET: api/PhongBan/5
         [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Tìm phòng ban")]
         public async Task<ActionResult<PhongBanDTO>> GetById(int id)
         {
             try
@@ -72,6 +76,7 @@ namespace SalaryManagementAPI.Controllers
 
         // POST: api/PhongBan
         [HttpPost]
+        [SwaggerOperation(Summary = "Tạo phòng ban")]
         public async Task<ActionResult<PhongBanDTO>> Create([FromBody] PhongBanDTO pbDto)
         {
             try
@@ -96,6 +101,7 @@ namespace SalaryManagementAPI.Controllers
 
         // PUT: api/PhongBan/5
         [HttpPut("{id}")]
+        [SwaggerOperation(Summary = "Cập nhật phòng ban")]
         public async Task<IActionResult> Update(int id, [FromBody] PhongBanDTO pbDto)
         {
             try
@@ -129,6 +135,7 @@ namespace SalaryManagementAPI.Controllers
 
         // DELETE: api/PhongBan/5
         [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Xóa phòng ban")]
         public async Task<IActionResult> Delete(int id)
         {
             try

@@ -8,5 +8,7 @@
         /// <param name="loginDto">Thông tin đăng nhập</param>
         /// <returns>JWT token hoặc null nếu thất bại</returns>
         Task<AuthResponseDTO> LoginAsync(LoginRequestDTO loginDto);
+        Task<(bool ThanhCong, string ThongBao)> CapTaiKhoanAsync(CapTaiKhoanDTO dto);
+        Task<(bool ThanhCong, string ThongBao)> DoiMatKhauAsync(string maNv, DoiMatKhauDTO dto);
     }
 }

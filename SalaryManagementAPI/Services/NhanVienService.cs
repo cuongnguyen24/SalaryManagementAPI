@@ -1,4 +1,6 @@
-﻿namespace SalaryManagementAPI.Services
+﻿using SalaryManagementAPI.Models;
+
+namespace SalaryManagementAPI.Services
 {
     public class NhanVienService : INhanVienService
     {
@@ -42,6 +44,14 @@
         {
             var nv = await _nhanVienRepo.GetByIdAsync(id);
             return nv == null ? null : _mapper.Map<NhanVienDTO>(nv);
+        }
+
+        public async Task<IEnumerable<NhanVienDTO>> GetByPhongBanAsync(int maPhong)
+        {
+            var dsNhanVien = await _nhanVienRepo
+                .FindAsync(nv => nv.MaPhong == maPhong);
+
+            return dsNhanVien.Select(nv => _mapper.Map<NhanVienDTO>(nv));
         }
 
         public async Task<bool> UpdateAsync(int id, NhanVienDTO nvDto)

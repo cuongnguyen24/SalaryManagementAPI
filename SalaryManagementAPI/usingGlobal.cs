@@ -12,3 +12,6 @@ global using SalaryManagementAPI.Models;
 global using System.Linq.Expressions;
 global using System.ComponentModel.DataAnnotations;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc.Authorization;
+global using Microsoft.OpenApi.Models;
