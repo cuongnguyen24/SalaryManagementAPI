@@ -1,8 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
-
-namespace SalaryManagementAPI.Controllers
+﻿namespace SalaryManagementAPI.Controllers
 {
-    [Authorize(Roles = "1,2")]
     [Route("api/[controller]")]
     [ApiController]
     public class NhanVienController : ControllerBase
@@ -16,6 +13,7 @@ namespace SalaryManagementAPI.Controllers
 
         // GET: api/NhanVien
         [HttpGet]
+        [Authorize(Roles = "1,2")]
         [SwaggerOperation(Summary = "Lấy danh sách nhân viên")]
         public async Task<ActionResult<IEnumerable<NhanVienDTO>>> GetAll()
         {
@@ -41,6 +39,7 @@ namespace SalaryManagementAPI.Controllers
 
         // GET: api/NhanVien/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "1,2")]
         [SwaggerOperation(Summary = "Tìm nhân viên theo id")]
         public async Task<ActionResult<NhanVienDTO>> GetById(int id)
         {
@@ -74,6 +73,7 @@ namespace SalaryManagementAPI.Controllers
 
         // GET: api/NhanVien/phongban/3
         [HttpGet("phongban/{maPhongBan}")]
+        [Authorize(Roles = "1,2")]
         [SwaggerOperation(Summary = "Lấy danh sách nhân viên theo phòng ban")]
         public async Task<IActionResult> GetByPhongBan(int maPhongBan)
         {
@@ -109,6 +109,7 @@ namespace SalaryManagementAPI.Controllers
 
         // POST: api/NhanVien
         [HttpPost]
+        [Authorize(Roles = "1,2")]
         [SwaggerOperation(Summary = "Thêm nhân viên")]
         public async Task<ActionResult<NhanVienDTO>> Create([FromBody] NhanVienDTO nvDto)
         {
@@ -134,6 +135,7 @@ namespace SalaryManagementAPI.Controllers
 
         // PUT: api/NhanVien/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "1,2")]
         [SwaggerOperation(Summary = "Cập nhật nhân viên")]
         public async Task<IActionResult> Update(int id, [FromBody] NhanVienDTO nvDto)
         {
@@ -167,6 +169,7 @@ namespace SalaryManagementAPI.Controllers
 
         // DELETE: api/NhanVien/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "1,2")]
         [SwaggerOperation(Summary = "Xóa nhân viên")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -196,5 +199,141 @@ namespace SalaryManagementAPI.Controllers
                 });
             }
         }
+
+        [HttpGet("me")]
+        [Authorize]
+        [SwaggerOperation(Summary = "Lấy thông tin cá nhân của người dùng hiện tại")]
+        public async Task<IActionResult> GetMyProfile()
+        {
+            var maNv = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(maNv))
+                return Unauthorized(new { ThanhCong = false, ThongBao = "Không xác định được người dùng." });
+
+            var nv = await _nhanVienService.GetByIdAsync(int.Parse(maNv));
+            if (nv == null)
+                return NotFound(new { ThanhCong = false, ThongBao = "Không tìm thấy thông tin cá nhân." });
+
+            return Ok(new
+            {
+                ThanhCong = true,
+                ThongBao = "Lấy thông tin cá nhân thành công.",
+                DuLieu = nv
+            });
+        }
+
+        [HttpPut("me")]
+        [Authorize]
+        [SwaggerOperation(Summary = "Cập nhật thông tin cá nhân")]
+        public async Task<IActionResult> CapNhatThongTinCaNhan([FromBody] CapNhatThongTinCaNhanDTO dto)
+        {
+            try
+            {
+                var maNvStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(maNvStr) || !int.TryParse(maNvStr, out int maNv))
+                {
+                    return Unauthorized(new
+                    {
+                        ThanhCong = false,
+                        ThongBao = "Không xác định được người dùng."
+                    });
+                }
+
+                var updatedNhanVien = await _nhanVienService.CapNhatThongTinCaNhanAsync(maNv, dto);
+                if (updatedNhanVien == null)
+                {
+                    return NotFound(new
+                    {
+                        ThanhCong = false,
+                        ThongBao = $"Không tìm thấy nhân viên có mã {maNv}."
+                    });
+                }
+
+                return Ok(new
+                {
+                    ThanhCong = true,
+                    ThongBao = "Cập nhật thông tin cá nhân thành công.",
+                    DuLieu = updatedNhanVien
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    ThanhCong = false,
+                    ThongBao = $"Lỗi khi cập nhật thông tin cá nhân: {ex.Message}"
+                });
+            }
+        }
+
+        // PUT: api/NhanVien/5/phongban
+        [HttpPut("{id}/phongban")]
+        [Authorize(Roles = "1,2")]
+        [SwaggerOperation(Summary = "Cập nhật phòng ban cho nhân viên")]
+        public async Task<IActionResult> CapNhatPhongBan(int id, [FromBody] int maPhongBanMoi)
+        {
+            try
+            {
+                var updated = await _nhanVienService.CapNhatPhongBanAsync(id, maPhongBanMoi);
+                if (updated == null)
+                {
+                    return NotFound(new
+                    {
+                        ThanhCong = false,
+                        ThongBao = $"Không tìm thấy nhân viên có ID {id}."
+                    });
+                }
+
+                return Ok(new
+                {
+                    ThanhCong = true,
+                    ThongBao = "Cập nhật phòng ban cho nhân viên thành công.",
+                    DuLieu = updated
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    ThanhCong = false,
+                    ThongBao = $"Lỗi khi cập nhật phòng ban: {ex.Message}"
+                });
+            }
+        }
+
+        // PUT: api/NhanVien/5/chucvu
+        [HttpPut("{id}/chucvu")]
+        [Authorize(Roles = "1,2")]
+        [SwaggerOperation(Summary = "Cập nhật chức vụ cho nhân viên")]
+        public async Task<IActionResult> CapNhatChucVu(int id, [FromBody] int maChucVuMoi)
+        {
+            try
+            {
+                var updated = await _nhanVienService.CapNhatChucVuAsync(id, maChucVuMoi);
+                if (updated == null)
+                {
+                    return NotFound(new
+                    {
+                        ThanhCong = false,
+                        ThongBao = $"Không tìm thấy nhân viên có ID {id}."
+                    });
+                }
+
+                return Ok(new
+                {
+                    ThanhCong = true,
+                    ThongBao = "Cập nhật chức vụ cho nhân viên thành công.",
+                    DuLieu = updated
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    ThanhCong = false,
+                    ThongBao = $"Lỗi khi cập nhật chức vụ: {ex.Message}"
+                });
+            }
+        }
+
     }
 }

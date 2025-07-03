@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
-
-namespace SalaryManagementAPI.Controllers
+﻿namespace SalaryManagementAPI.Controllers
 {
     [Authorize(Roles = "1")]
     [Route("api/[controller]")]

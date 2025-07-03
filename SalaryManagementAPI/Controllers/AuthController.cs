@@ -1,10 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using Swashbuckle.AspNetCore.Annotations;
-using System.Security.Claims;
-
-namespace SalaryManagementAPI.Controllers
+﻿namespace SalaryManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

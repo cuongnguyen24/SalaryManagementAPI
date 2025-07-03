@@ -5,12 +5,29 @@ namespace SalaryManagementAPI.Services
     public class NhanVienService : INhanVienService
     {
         private readonly IRepository<NhanVien> _nhanVienRepo;
+        private readonly IRepository<PhongBan> _phongBanRepo;
+        private readonly IRepository<ChucVu> _chucVuRepo;
         private readonly IMapper _mapper;
 
-        public NhanVienService(IRepository<NhanVien> nhanVienRepo, IMapper mapper)
+        public NhanVienService(IRepository<NhanVien> nhanVienRepo, IRepository<PhongBan> phongBanRepo, IRepository<ChucVu> chucVuRepo, IMapper mapper)
         {
             _nhanVienRepo = nhanVienRepo;
+            _phongBanRepo = phongBanRepo;
+            _chucVuRepo = chucVuRepo;
             _mapper = mapper;
+        }
+
+        public async Task<NhanVienDTO?> CapNhatThongTinCaNhanAsync(int maNv, CapNhatThongTinCaNhanDTO dto)
+        {
+            var nv = await _nhanVienRepo.GetByIdAsync(maNv);
+            if (nv == null) return null;
+
+            _mapper.Map(dto, nv);
+
+            _nhanVienRepo.Update(nv);
+            await _nhanVienRepo.SaveChangesAsync();
+
+            return _mapper.Map<NhanVienDTO>(nv);
         }
 
         public async Task<NhanVienDTO> CreateAsync(NhanVienDTO nvDto)
@@ -66,5 +83,39 @@ namespace SalaryManagementAPI.Services
             await _nhanVienRepo.SaveChangesAsync();
             return true;
         }
+
+        public async Task<NhanVienDTO?> CapNhatPhongBanAsync(int maNv, int maPhongBanMoi)
+        {
+            var nv = await _nhanVienRepo.GetByIdAsync(maNv);
+            if (nv == null) return null;
+
+            // Kiểm tra phòng ban có tồn tại không
+            var phongBan = await _phongBanRepo.GetByIdAsync(maPhongBanMoi);
+            if (phongBan == null) throw new Exception($"Phòng ban với mã {maPhongBanMoi} không tồn tại.");
+
+            nv.MaPhong = maPhongBanMoi;
+            _nhanVienRepo.Update(nv);
+            await _nhanVienRepo.SaveChangesAsync();
+
+            return _mapper.Map<NhanVienDTO>(nv);
+        }
+
+        public async Task<NhanVienDTO?> CapNhatChucVuAsync(int maNv, int maChucVuMoi)
+        {
+            var nv = await _nhanVienRepo.GetByIdAsync(maNv);
+            if (nv == null) return null;
+
+            // Kiểm tra chức vụ có tồn tại không
+            var chucVu = await _chucVuRepo.GetByIdAsync(maChucVuMoi);
+            if (chucVu == null) throw new Exception($"Chức vụ với mã {maChucVuMoi} không tồn tại.");
+
+            nv.MaChucVu = maChucVuMoi;
+            _nhanVienRepo.Update(nv);
+            await _nhanVienRepo.SaveChangesAsync();
+
+            return _mapper.Map<NhanVienDTO>(nv);
+        }
+
+
     }
 }
