@@ -76,6 +76,14 @@
         {
             try
             {
+                if(dto.MatKhauMoi.Length < 6)
+                {
+                    return BadRequest(new
+                    {
+                        thanhCong = false,
+                        thongBao = "Mật khẩu mới phải có ít nhất 6 ký tự."
+                    });
+                }
                 var maNv = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 if (string.IsNullOrEmpty(maNv))

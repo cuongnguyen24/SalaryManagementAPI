@@ -17,3 +17,4 @@ global using Microsoft.AspNetCore.Mvc.Authorization;
 global using Microsoft.OpenApi.Models;
 global using Swashbuckle.AspNetCore.Annotations;
 global using System.Security.Claims;
+global using SalaryManagementAPI.Helpers;

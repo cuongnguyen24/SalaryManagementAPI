@@ -1,4 +1,6 @@
-﻿namespace SalaryManagementAPI.Controllers
+﻿using System.Text.RegularExpressions;
+
+namespace SalaryManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -113,6 +115,21 @@
         [SwaggerOperation(Summary = "Thêm nhân viên")]
         public async Task<ActionResult<NhanVienDTO>> Create([FromBody] NhanVienDTO nvDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new
+                {
+                    ThanhCong = false,
+                    ThongBao = "Dữ liệu nhập không hợp lệ.",
+                    LoiChiTiet = ModelState
+                        .Where(x => x.Value.Errors.Count > 0)
+                        .ToDictionary(
+                            kvp => kvp.Key,
+                            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                        )
+                });
+            }
+
             try
             {
                 var created = await _nhanVienService.CreateAsync(nvDto);
@@ -139,6 +156,21 @@
         [SwaggerOperation(Summary = "Cập nhật nhân viên")]
         public async Task<IActionResult> Update(int id, [FromBody] NhanVienDTO nvDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new
+                {
+                    ThanhCong = false,
+                    ThongBao = "Dữ liệu nhập không hợp lệ.",
+                    LoiChiTiet = ModelState
+                        .Where(x => x.Value.Errors.Count > 0)
+                        .ToDictionary(
+                            kvp => kvp.Key,
+                            kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                        )
+                });
+            }
+
             try
             {
                 var result = await _nhanVienService.UpdateAsync(id, nvDto);
@@ -226,6 +258,21 @@
         [SwaggerOperation(Summary = "Cập nhật thông tin cá nhân")]
         public async Task<IActionResult> CapNhatThongTinCaNhan([FromBody] CapNhatThongTinCaNhanDTO dto)
         {
+            if (!ModelState.IsValid)
+            {
+                var loiChiTiet = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(new
+                {
+                    ThanhCong = false,
+                    ThongBao = "Dữ liệu không hợp lệ.",
+                    LoiChiTiet = loiChiTiet
+                });
+            }
+
             try
             {
                 var maNvStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

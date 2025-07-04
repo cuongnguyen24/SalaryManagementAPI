@@ -37,7 +37,6 @@ namespace SalaryManagementAPI.Services
             await _nhanVienRepo.AddAsync(nvEntity);
             await _nhanVienRepo.SaveChangesAsync();
 
-            // Sau khi thêm, có thể gán lại Id hoặc map lại nếu muốn
             return _mapper.Map<NhanVienDTO>(nvEntity);
         }
 
