@@ -14,6 +14,7 @@
             services.AddScoped<IChucVuService, ChucVuService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IHopDongService, HopDongService>();
+            services.AddScoped<IThueTNCNService, ThueTNCNService>();
         }
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)

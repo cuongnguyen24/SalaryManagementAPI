@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalaryManagementAPI.Data;
 
@@ -11,9 +12,11 @@ using SalaryManagementAPI.Data;
 namespace SalaryManagementAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250715064538_AddBangThueAndGiamTruThueTNCN")]
+    partial class AddBangThueAndGiamTruThueTNCN
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +42,6 @@ namespace SalaryManagementAPI.Migrations
                     b.Property<decimal>("SoTienGiamTru")
                         .HasPrecision(15, 2)
                         .HasColumnType("decimal(15,2)");
-
-                    b.Property<DateTime>("ThoiGianHieuLuc")
-                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("TyLe")
                         .HasPrecision(5, 2)

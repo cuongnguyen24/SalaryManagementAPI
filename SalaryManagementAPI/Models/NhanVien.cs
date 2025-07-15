@@ -24,6 +24,8 @@
         public ICollection<PhuCap>? PhuCaps { get; set; }
         public ICollection<ThuongPhat>? ThuongPhats { get; set; }
         public ICollection<NguoiDung>? NguoiDungs { get; set; }
+        public ICollection<GiamTruThueTNCN>? GiamTruThueTNCNs { get; set; }
+
     }
 
 }

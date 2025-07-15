@@ -1,4 +1,6 @@
-﻿namespace SalaryManagementAPI.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SalaryManagementAPI.Models
 {
     public class ThueTNCN
     {
@@ -13,5 +15,12 @@
         public decimal ThuePhaiDong { get; set; }
 
         public NhanVien? NhanVien { get; set; }
+
+        public int BacThue { get; set; }
+
+        [ForeignKey("BacThue")]
+        public BangThueTNCN? BacThueInfo { get; set; }
+
+        public DateTime NgayTinhThue { get; set; } = DateTime.Now;
     }
 }

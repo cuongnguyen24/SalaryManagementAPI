@@ -18,6 +18,8 @@
         public DbSet<ThuongPhat> ThuongPhats => Set<ThuongPhat>();
         public DbSet<NguoiDung> NguoiDungs => Set<NguoiDung>();
         public DbSet<VaiTro> VaiTros => Set<VaiTro>();
+        public DbSet<BangThueTNCN> BangThueTNCNs => Set<BangThueTNCN>();
+        public DbSet<GiamTruThueTNCN> GiamTruThueTNCNs => Set<GiamTruThueTNCN>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +38,8 @@
             modelBuilder.Entity<ThuongPhat>().ToTable("ThuongPhat");
             modelBuilder.Entity<NguoiDung>().ToTable("NguoiDung");
             modelBuilder.Entity<VaiTro>().ToTable("VaiTro");
+            modelBuilder.Entity<BangThueTNCN>().ToTable("BangThueTNCN");
+            modelBuilder.Entity<GiamTruThueTNCN>().ToTable("GiamTruThueTNCN");
 
             // Khóa chính cho NguoiDung là TenDangNhap
             modelBuilder.Entity<NguoiDung>()
@@ -103,6 +107,16 @@
                 .HasOne(nv => nv.ChucVu)
                 .WithMany(cv => cv.NhanViens)
                 .HasForeignKey(nv => nv.MaChucVu);
+
+            modelBuilder.Entity<ThueTNCN>()
+                .HasOne(t => t.BacThueInfo)
+                .WithMany(b => b.ThueTNCNs)
+                .HasForeignKey(t => t.BacThue);
+
+            modelBuilder.Entity<GiamTruThueTNCN>()
+                .HasOne(gt => gt.NhanVien)
+                .WithMany(nv => nv.GiamTruThueTNCNs)
+                .HasForeignKey(gt => gt.MaNV);
         }
     }
 }
