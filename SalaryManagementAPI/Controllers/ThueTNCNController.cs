@@ -1,14 +1,18 @@
-﻿namespace SalaryManagementAPI.Controllers
+﻿using AutoMapper;
+
+namespace SalaryManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ThueTNCNController : ControllerBase
     {
         private readonly IThueTNCNService _thueTNCNService;
+        private readonly IMapper _mapper;
 
-        public ThueTNCNController(IThueTNCNService thueTNCNService)
+        public ThueTNCNController(IThueTNCNService thueTNCNService, IMapper mapper)
         {
             _thueTNCNService = thueTNCNService;
+            _mapper = mapper;
         }
 
         // GET : api/ThueTNCN/nhanvien/{maNV}
@@ -180,11 +184,12 @@
         [HttpPost("giamtru")]
         [Authorize(Roles = "1,2,3")]
         [SwaggerOperation(Summary = "Thêm khoản giảm trừ cho nhân viên")]
-        public async Task<IActionResult> ThemGiamTru([FromBody] GiamTruThueTNCN dto)
+        public async Task<IActionResult> ThemGiamTru([FromBody] GiamTruDTO dto)
         {
             try
             {
-                var created = await _thueTNCNService.ThemGiamTruAsync(dto);
+                var entity = _mapper.Map<GiamTruThueTNCN>(dto);
+                var created = await _thueTNCNService.ThemGiamTruAsync(entity);
                 return Ok(new
                 {
                     ThanhCong = true,
@@ -206,11 +211,12 @@
         [HttpPut("giamtru/{id}")]
         [Authorize(Roles = "1,2,3")]
         [SwaggerOperation(Summary = "Cập nhật khoản giảm trừ theo ID")]
-        public async Task<IActionResult> CapNhatGiamTru(int id, [FromBody] GiamTruThueTNCN dto)
+        public async Task<IActionResult> CapNhatGiamTru(int id, [FromBody] GiamTruDTO dto)
         {
             try
             {
-                var updated = await _thueTNCNService.CapNhatGiamTruAsync(id, dto);
+                var entity = _mapper.Map<GiamTruThueTNCN>(dto);
+                var updated = await _thueTNCNService.CapNhatGiamTruAsync(id, entity);
                 if (updated == null)
                 {
                     return NotFound(new
