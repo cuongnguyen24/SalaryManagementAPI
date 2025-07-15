@@ -13,6 +13,7 @@
             services.AddScoped<IPhongBanService, PhongBanService>();
             services.AddScoped<IChucVuService, ChucVuService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IHopDongService, HopDongService>();
         }
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
