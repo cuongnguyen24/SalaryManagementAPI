@@ -1,0 +1,6 @@
+[build]
+builder = "NIXPACKS"
+
+[env]
+NIXPACKS_NODE_VERSION = "none"
+NIXPACKS_DOTNET_VERSION = "8.0"
