@@ -1,6 +1,0 @@
-[build]
-builder = "nixpacks"
-buildCommand = "dotnet restore ./SalaryManagementAPI/SalaryManagementAPI.csproj && dotnet publish -c Release -o out ./SalaryManagementAPI/SalaryManagementAPI.csproj"
-
-[start]
-command = "dotnet ./out/SalaryManagementAPI.dll"
