@@ -1,6 +1,6 @@
 [build]
-builder = "NIXPACKS"
+builder = "nixpacks"
+buildCommand = "dotnet restore ./SalaryManagementAPI/SalaryManagementAPI.csproj && dotnet publish -c Release -o out ./SalaryManagementAPI/SalaryManagementAPI.csproj"
 
-[env]
-NIXPACKS_NODE_VERSION = "none"
-NIXPACKS_DOTNET_VERSION = "8.0"
+[start]
+command = "dotnet ./out/SalaryManagementAPI.dll"
