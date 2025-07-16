@@ -30,4 +30,20 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    try
+    {
+        dbContext.Database.CanConnect();
+        Console.WriteLine("Kết nối PostgreSQL thành công!");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Lỗi kết nối PostgreSQL:");
+        Console.WriteLine(ex.Message);
+    }
+}
+
 app.Run();
