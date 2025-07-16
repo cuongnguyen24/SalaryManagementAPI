@@ -61,7 +61,7 @@
             modelBuilder.Entity<BaoHiem>()
                 .HasOne(b => b.NhanVien)
                 .WithMany(nv => nv.BaoHiems)
-            .HasForeignKey(b => b.MaNV);
+                .HasForeignKey(b => b.MaNV);
 
             modelBuilder.Entity<ThueTNCN>()
                 .HasOne(t => t.NhanVien)

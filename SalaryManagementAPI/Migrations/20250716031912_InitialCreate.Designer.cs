@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SalaryManagementAPI.Data;
 
 #nullable disable
@@ -12,8 +12,8 @@ using SalaryManagementAPI.Data;
 namespace SalaryManagementAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250630041736_RenameTables")]
-    partial class RenameTables
+    [Migration("20250716031912_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,42 +21,72 @@ namespace SalaryManagementAPI.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.17")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("SalaryManagementAPI.Models.BangThueTNCN", b =>
+                {
+                    b.Property<int>("Bac")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Bac"));
+
+                    b.Property<decimal?>("MucDen")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal?>("MucTu")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("SoTienGiamTru")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("numeric(15,2)");
+
+                    b.Property<DateTime>("ThoiGianHieuLuc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("TyLe")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("numeric(5,2)");
+
+                    b.HasKey("Bac");
+
+                    b.ToTable("BangThueTNCN", (string)null);
+                });
 
             modelBuilder.Entity("SalaryManagementAPI.Models.BaoHiem", b =>
                 {
                     b.Property<int>("MaBH")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaBH"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaBH"));
 
                     b.Property<decimal>("BHTN")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<decimal>("BHXH")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<decimal>("BHYT")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<int>("MaNV")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Nam")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Thang")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("TongBH")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.HasKey("MaBH");
 
@@ -69,30 +99,30 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaCC")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaCC"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaCC"));
 
                     b.Property<int>("MaNV")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Nam")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("SoGioTangCa")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("SoNgayCong")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("SoNgayNghiCoPhep")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("SoNgayNghiKhongPhep")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Thang")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("MaCC");
 
@@ -105,40 +135,40 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaChiTiet")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaChiTiet"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaChiTiet"));
 
                     b.Property<decimal>("HeSoLuong")
                         .HasPrecision(4, 2)
-                        .HasColumnType("decimal(4,2)");
+                        .HasColumnType("numeric(4,2)");
 
                     b.Property<decimal>("LuongCoBan")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<decimal>("LuongThucLanh")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<decimal>("LuongTruocKhauTru")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<int>("MaLuong")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("TongPhat")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<decimal>("TongPhuCap")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<decimal>("TongThuong")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.HasKey("MaChiTiet");
 
@@ -152,47 +182,80 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaChucVu")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaChucVu"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaChucVu"));
 
                     b.Property<decimal>("HeSoLuong")
                         .HasPrecision(4, 2)
-                        .HasColumnType("decimal(4,2)");
+                        .HasColumnType("numeric(4,2)");
 
                     b.Property<string>("TenChucVu")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("MaChucVu");
 
                     b.ToTable("ChucVu", (string)null);
                 });
 
+            modelBuilder.Entity("SalaryManagementAPI.Models.GiamTruThueTNCN", b =>
+                {
+                    b.Property<int>("MaGiamTru")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaGiamTru"));
+
+                    b.Property<string>("LoaiGiamTru")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("MaNV")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Nam")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("SoTien")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("numeric(15,2)");
+
+                    b.Property<int>("Thang")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MaGiamTru");
+
+                    b.HasIndex("MaNV");
+
+                    b.ToTable("GiamTruThueTNCN", (string)null);
+                });
+
             modelBuilder.Entity("SalaryManagementAPI.Models.HopDong", b =>
                 {
                     b.Property<int>("MaHD")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHD"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaHD"));
 
                     b.Property<string>("LoaiHopDong")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("MaNV")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("MucLuongCoBan")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<DateTime>("NgayBatDau")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("NgayKetThuc")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("MaHD");
 
@@ -205,25 +268,25 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaLuong")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaLuong"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaLuong"));
 
                     b.Property<int>("MaNV")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Nam")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("NgayTinhLuong")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Thang")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("TongLuong")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.HasKey("MaLuong");
 
@@ -235,17 +298,17 @@ namespace SalaryManagementAPI.Migrations
             modelBuilder.Entity("SalaryManagementAPI.Models.NguoiDung", b =>
                 {
                     b.Property<string>("TenDangNhap")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("MaNV")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("MaVaiTro")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("MatKhau")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("TenDangNhap");
 
@@ -260,38 +323,38 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaNV")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaNV"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaNV"));
 
                     b.Property<string>("DiaChi")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("DienThoai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("GioiTinh")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("HoTen")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("MaChucVu")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("MaPhong")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("NgaySinh")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("MaNV");
 
@@ -306,13 +369,13 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaPhong")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaPhong"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaPhong"));
 
                     b.Property<string>("TenPhong")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("MaPhong");
 
@@ -323,26 +386,26 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaPC")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaPC"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaPC"));
 
                     b.Property<string>("LoaiPhuCap")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("MaNV")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Nam")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("SoTien")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<int>("Thang")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("MaPC");
 
@@ -355,28 +418,36 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaThue")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaThue"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaThue"));
+
+                    b.Property<int>("BacThue")
+                        .HasColumnType("integer");
 
                     b.Property<int>("MaNV")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Nam")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("NgayTinhThue")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Thang")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("ThuNhapChiuThue")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<decimal>("ThuePhaiDong")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.HasKey("MaThue");
+
+                    b.HasIndex("BacThue");
 
                     b.HasIndex("MaNV");
 
@@ -387,30 +458,30 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaTP")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaTP"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaTP"));
 
                     b.Property<string>("Loai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LyDo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("MaNV")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Nam")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("SoTien")
                         .HasPrecision(15, 2)
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("numeric(15,2)");
 
                     b.Property<int>("Thang")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("MaTP");
 
@@ -423,13 +494,13 @@ namespace SalaryManagementAPI.Migrations
                 {
                     b.Property<int>("MaVaiTro")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaVaiTro"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MaVaiTro"));
 
                     b.Property<string>("TenVaiTro")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("MaVaiTro");
 
@@ -467,6 +538,17 @@ namespace SalaryManagementAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Luong");
+                });
+
+            modelBuilder.Entity("SalaryManagementAPI.Models.GiamTruThueTNCN", b =>
+                {
+                    b.HasOne("SalaryManagementAPI.Models.NhanVien", "NhanVien")
+                        .WithMany("GiamTruThueTNCNs")
+                        .HasForeignKey("MaNV")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NhanVien");
                 });
 
             modelBuilder.Entity("SalaryManagementAPI.Models.HopDong", b =>
@@ -542,11 +624,19 @@ namespace SalaryManagementAPI.Migrations
 
             modelBuilder.Entity("SalaryManagementAPI.Models.ThueTNCN", b =>
                 {
+                    b.HasOne("SalaryManagementAPI.Models.BangThueTNCN", "BacThueInfo")
+                        .WithMany("ThueTNCNs")
+                        .HasForeignKey("BacThue")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SalaryManagementAPI.Models.NhanVien", "NhanVien")
                         .WithMany("ThueTNCNs")
                         .HasForeignKey("MaNV")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BacThueInfo");
 
                     b.Navigation("NhanVien");
                 });
@@ -560,6 +650,11 @@ namespace SalaryManagementAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("NhanVien");
+                });
+
+            modelBuilder.Entity("SalaryManagementAPI.Models.BangThueTNCN", b =>
+                {
+                    b.Navigation("ThueTNCNs");
                 });
 
             modelBuilder.Entity("SalaryManagementAPI.Models.ChucVu", b =>
@@ -577,6 +672,8 @@ namespace SalaryManagementAPI.Migrations
                     b.Navigation("BaoHiems");
 
                     b.Navigation("ChamCongs");
+
+                    b.Navigation("GiamTruThueTNCNs");
 
                     b.Navigation("HopDongs");
 

@@ -20,7 +20,7 @@
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
         }
 
         public static void ConfigureAutoMapper(this IServiceCollection services)
@@ -56,7 +56,6 @@
             });
         }
 
-
         public static void ConfigureControllersWithGlobalAuthorize(this IServiceCollection services)
         {
             services.AddControllers(options =>
@@ -67,6 +66,5 @@
                 options.Filters.Add(new AuthorizeFilter(policy));
             });
         }
-
     }
 }
