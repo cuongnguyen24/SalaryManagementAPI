@@ -1,4 +1,6 @@
-﻿namespace SalaryManagementAPI.Extensions
+﻿using Npgsql;
+
+namespace SalaryManagementAPI.Extensions
 {
     public static class ServiceExtensions
     {
@@ -26,21 +28,26 @@
             //services.AddDbContext<AppDbContext>(options =>
             //    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<AppDbContext>(options =>
+            // Chuyển đổi nếu dùng DATABASE_URL từ Railway
+            if (connectionString.StartsWith("postgresql://"))
             {
-                options.UseNpgsql(connectionString, npgsqlOptions =>
-                {
-                    npgsqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                    npgsqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
-                });
+                var uri = new Uri(connectionString);
+                var userInfo = uri.UserInfo.Split(':');
 
-                // Chỉ bật logging chi tiết trong môi trường Development
-                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                connectionString = new NpgsqlConnectionStringBuilder
                 {
-                    options.LogTo(Console.WriteLine, LogLevel.Information)
-                           .EnableSensitiveDataLogging();
-                }
-            });
+                    Host = uri.Host,
+                    Port = uri.Port,
+                    Username = userInfo[0],
+                    Password = userInfo[1],
+                    Database = uri.AbsolutePath.TrimStart('/'),
+                    SslMode = SslMode.Require,
+                    TrustServerCertificate = true
+                }.ToString();
+            }
+
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(connectionString));
         }
 
         public static void ConfigureAutoMapper(this IServiceCollection services)
