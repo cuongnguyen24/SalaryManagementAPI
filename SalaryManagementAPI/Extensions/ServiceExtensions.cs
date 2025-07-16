@@ -22,7 +22,7 @@ namespace SalaryManagementAPI.Extensions
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             // Ưu tiên lấy từ biến môi trường trước, nếu không có thì dùng từ configuration
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING")
+            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
                                   ?? configuration.GetConnectionString("DefaultConnection");
 
             //services.AddDbContext<AppDbContext>(options =>
